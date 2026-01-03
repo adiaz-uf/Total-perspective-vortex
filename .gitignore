@@ -1,0 +1,6 @@
+venv
+.env
+.ipynb_*
+__pycache__
+.DS_Store
+.vscode
