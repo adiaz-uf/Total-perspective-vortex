@@ -1,4 +1,7 @@
 pandas
-matplotlib
+plotly
 numpy
 scikit-learn
+matplotlib
+PyQt5
+mne
