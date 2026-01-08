@@ -17,3 +17,6 @@ jupyter:
 install-deps:
 	venv/bin/pip install -r requirements.txt
 	@echo "${GREEN}Dependencies installed!${RESET}"
+
+process-data:
+	@venv/bin/python V.1.1-process_data/main.py

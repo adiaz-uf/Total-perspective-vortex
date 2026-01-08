@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-from matplotlib.pyplot import matplotlib
+import matplotlib.pyplot as plt
 
 def plot_channels(raw, title_suffix=""):
     n_seconds = 0.5 # Seconds to plot
@@ -75,16 +75,33 @@ def plot_psd_compare(raw_before, raw_after):
 
 
 def heatmap_psd(raw):
-	raw.pick("eeg")
+    raw_eeg = raw.copy().pick("eeg")
 
-	# Compute PSD for alpha band (8-12 Hz)
-	spectrum_alpha = raw.compute_psd(fmin=8, fmax=12) 
+    # Compute PSD for alpha band (8-12 Hz)
+    spectrum_alpha = raw_eeg.compute_psd(fmin=8, fmax=12)
 
-	# Plot topomap for alpha band
-	spectrum_alpha.plot_topomap(bands={'Alpha': (8, 12)}, cmap='Spectral_r', contours=5, sensors=True)
+    # Plot topomap for alpha band
+    fig_alpha = spectrum_alpha.plot_topomap(
+        bands={'Alpha (8-12 Hz)': (8, 12)}, 
+        cmap='Spectral_r', 
+        sensors=True, 
+        show_names=True,
+        mask_params=dict(markerfacecolor='black', markersize=4)
+    )
+    fig_alpha.set_size_inches(12, 12)
+    fig_alpha.savefig("V.1.1-process_data/alpha.png")
 
-	# Compute PSD for beta band (12-30 Hz)
-	spectrum_beta = raw.compute_psd(fmin=12, fmax=30) 
+    # Compute PSD for beta band (12-30 Hz)
+    spectrum_beta = raw_eeg.compute_psd(fmin=12, fmax=30) 
 
-	# Plot topomap for beta band
-	spectrum_beta.plot_topomap(bands={'Beta': (12, 30)}, cmap='Spectral_r', contours=5, sensors=True)
+    # Plot topomap for beta band
+    fig_beta = spectrum_beta.plot_topomap(
+        bands={'Beta (12-30 Hz)': (12, 30)}, 
+        cmap='Spectral_r', 
+        sensors=True, 
+        show_names=True, 
+        mask_params=dict(markerfacecolor='black', markersize=4)
+    )
+
+    fig_beta.set_size_inches(12, 12)
+    fig_beta.savefig("V.1.1-process_data/beta.png")
