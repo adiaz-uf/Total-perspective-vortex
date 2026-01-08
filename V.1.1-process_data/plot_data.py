@@ -76,32 +76,46 @@ def plot_psd_compare(raw_before, raw_after):
 
 def heatmap_psd(raw):
     raw_eeg = raw.copy().pick("eeg")
+    plt.rcParams.update({'font.size': 10})
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
 
-    # Compute PSD for alpha band (8-12 Hz)
-    spectrum_alpha = raw_eeg.compute_psd(fmin=8, fmax=12)
+    # ALPHA (8-12 Hz)
+    spec_alpha = raw_eeg.compute_psd(fmin=8, fmax=12)
+    data_alpha = spec_alpha.get_data() * 1e12
+    vmax_alpha = np.nanpercentile(data_alpha, 85)
+    
+    if vmax_alpha <= 0: vmax_alpha = 1.0
 
-    # Plot topomap for alpha band
-    fig_alpha = spectrum_alpha.plot_topomap(
-        bands={'Alpha (8-12 Hz)': (8, 12)}, 
-        cmap='Spectral_r', 
-        sensors=True, 
+    spec_alpha.plot_topomap(
+        bands={'Alpha': (8, 12)},
+        cmap='Spectral_r',
+        sensors=True,
         show_names=True,
-        mask_params=dict(markerfacecolor='black', markersize=4)
-    )
-    fig_alpha.set_size_inches(12, 12)
-    fig_alpha.savefig("V.1.1-process_data/alpha.png")
-
-    # Compute PSD for beta band (12-30 Hz)
-    spectrum_beta = raw_eeg.compute_psd(fmin=12, fmax=30) 
-
-    # Plot topomap for beta band
-    fig_beta = spectrum_beta.plot_topomap(
-        bands={'Beta (12-30 Hz)': (12, 30)}, 
-        cmap='Spectral_r', 
-        sensors=True, 
-        show_names=True, 
-        mask_params=dict(markerfacecolor='black', markersize=4)
+        axes=ax1,
+        vlim=(0, vmax_alpha),
+        mask_params=dict(markerfacecolor='black', markersize=4),
+        show=False
     )
 
-    fig_beta.set_size_inches(12, 12)
-    fig_beta.savefig("V.1.1-process_data/beta.png")
+    # BETA (12-30 Hz)
+    spec_beta = raw_eeg.compute_psd(fmin=12, fmax=30)
+    data_beta = spec_beta.get_data() * 1e12
+    vmax_beta = np.nanpercentile(data_beta, 85)
+    
+    if vmax_beta <= 0: vmax_beta = 1.0
+
+    spec_beta.plot_topomap(
+        bands={'Beta': (12, 30)},
+        cmap='Spectral_r',
+        sensors=True,
+        show_names=True,
+        axes=ax2,
+        vlim=(0, vmax_beta),
+        mask_params=dict(markerfacecolor='black', markersize=4),
+        show=False
+    )
+
+    plt.tight_layout()
+    output_path = "./V.1.1-process_data/Topomap_alpha_beta.png"
+    fig.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.close(fig)

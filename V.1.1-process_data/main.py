@@ -2,7 +2,7 @@ import mne
 from plot_data import plot_channels, plot_psd_compare, heatmap_psd
 from extract_features import extract_features
 
-DATA_FILE = "data/S001/S001R04.edf"
+DATA_FILE = "data/S001/S001R08.edf"
 
 def print_info(features, events):
 	print("Features shape:", features.shape)
