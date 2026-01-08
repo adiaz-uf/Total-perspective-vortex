@@ -10,7 +10,7 @@
 **Raw Data Limitations**  
 The original signals contained significant DC offset (drifting baselines) and high-frequency noise (sharp spikes). This noise stems from muscle activity (EMG) and power line interference (50/60 Hz).
 
-**Filter Impact (1–40 Hz)**  
+**Filter Impact (1–50 Hz)**  
 Applying a band-pass filter transformed *sharp/jagged* signals into *smooth/rounded* waves. This removes non-brain artifacts while preserving the physiological rhythms necessary for classification.
 
 ---
@@ -32,8 +32,8 @@ The following **features** were identified as the most critical inputs for the a
 
 ### B. Spatial Domain (The “Where”)
 
-- **Motor Cortex Focus**  
-  While the data includes 64 channels, the algorithm should prioritize the central electrodes **C3, Cz, and C4**. These are located over the motor strip, where motor imagery signals are strongest.
+- **Motor Zone Focus**  
+  While the data includes 64 channels, the algorithm should prioritize the motor zone electrodes **FC3, FCz, FC4, C3, Cz, C4, CP3, CPz, CP4**. These are located over the motor strip, where motor imagery signals are strongest.
 
 ---
 
@@ -43,4 +43,4 @@ The input to the machine learning model will **not** be the raw voltage signal, 
 
 - Mean power in the Alpha and Beta bands  
 - Ratios between bands (e.g., Alpha/Beta ratio)  
-- Channel selection focused on the motor cortex to reduce dimensionality and avoid overfitting on noise from frontal or occipital leads
+- Channel selection focused on the motor zone to reduce dimensionality and avoid overfitting on noise from frontal or occipital leads
